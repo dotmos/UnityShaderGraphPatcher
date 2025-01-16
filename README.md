@@ -1,6 +1,6 @@
 # Unity Shadergraph Patcher
 ![UnityVersion](https://img.shields.io/static/v1?label=unity&message=2022.3%2B&color=blue&style=flat&logo=Unity)
-![GitHub](https://img.shields.io/github/license/dotmos/UnityShaderGraphPatcher)
+![GitHub](https://img.shields.io/github/license/dotmos/unityshadergraphpatcher)
 
 Patcher utility for Unity Shadergraph shaders.</br>
 Adds features to Shadergraph shaders that are currently not available in Shadergraph.</br>
@@ -30,3 +30,5 @@ If patching both SV_InstanceID and nointerpolation, "InstanceID" in the screensh
 Copy the "Editor" folder to your Unity project. The patcher will then be available under "Tools/Shader Graph Patcher".</br>
 Drag and drop a shadergraph or shader to the window and select the features you want to patch.</br>
 Then press "Patch"
+
+~ Use at your own risk. ~
