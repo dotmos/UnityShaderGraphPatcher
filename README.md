@@ -4,7 +4,7 @@
 
 Patcher utility for Unity Shadergraph shaders.</br>
 Adds features to Shadergraph shaders that are currently not available in Shadergraph.</br>
-Tested with Shadergraph 14.0.11
+Tested with Shadergraph 14.0.11 and URP 14.0.11 . HDRP has not been tested.
 
 ### Features
 
