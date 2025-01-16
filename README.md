@@ -1,15 +1,18 @@
 # UnityShaderGraphPatcher
-Patcher utility for Unity Shadergraph shaders.
+![UnityVersion](https://img.shields.io/static/v1?label=unity&message=2022.3%2B&color=blue&style=flat&logo=Unity)
+![GitHub](https://img.shields.io/github/license/dotmos/UnityShaderGraphPatcher)
+
+Patcher utility for Unity Shadergraph shaders.</br>
 Tested with Shadergraph 14.0.11 .
 
 The patcher currently supports the following features:
 - Use SV_InstanceID instead of unity_InstanceID when using the InstanceID-node. This breaks instancing support for the shader, but in return allows using the shader with IndexedIndirect render functions. i.e. Graphics.RenderPrimitivesIndexedIndirect
 - Add "nointerpolation" attribute to CustomInterpolators / Vertexshader output
 
-When patching a shader, the original shader(graph) will not be touched and a new shader will be created instead.
-The new shader will have the suffix "_Patched".
-i.e. Opaque.shadergraph will become Opaque_Patched.shadergraph
-The name of the new shader will also be changed.
+When patching a shader, the original shader(graph) will not be touched and a new shader will be created instead.</br>
+The new shader will have the suffix "_Patched".</br>
+i.e. Opaque.shadergraph will become Opaque_Patched.shadergraph</br>
+The name of the new shader will also be changed.</br>
 i.e. "Shader Graphs/Opaque" will become "Shader Graphs/Opaque_Patched"
 
 <img src="./Docs/Graph.jpg">
@@ -18,6 +21,6 @@ If patching both SV_InstanceID and nointerpolation, "InstanceID" in the screensh
 
 <img src="./Docs/PatcherWindow.jpg">
 
-Just copy the "Editor" folder to your Unity project. The patcher will then be available under "Tools/Shader Graph Patcher".
-Drag and drop a shadergraph or shader to the window and select the features you want to patch.
+Just copy the "Editor" folder to your Unity project. The patcher will then be available under "Tools/Shader Graph Patcher".</br>
+Drag and drop a shadergraph or shader to the window and select the features you want to patch.</br>
 Then press "Patch"
