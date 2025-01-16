@@ -3,9 +3,10 @@
 ![GitHub](https://img.shields.io/github/license/dotmos/UnityShaderGraphPatcher)
 
 Patcher utility for Unity Shadergraph shaders.</br>
-Tested with Shadergraph 14.0.11 .
+Adds features to Shadergraph shaders that are currently not available in Shadergraph.</br>
+Tested with Shadergraph 14.0.11
 
-The patcher currently supports the following features:
+**Current features:**
 - Use SV_InstanceID instead of unity_InstanceID when using the InstanceID-node. This breaks instancing support for the shader, but in return allows using the shader with IndexedIndirect render functions. i.e. Graphics.RenderPrimitivesIndexedIndirect
 - Add "nointerpolation" attribute to CustomInterpolators / Vertexshader output
 
