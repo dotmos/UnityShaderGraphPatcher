@@ -1,4 +1,4 @@
-# UnityShaderGraphPatcher
+# Unity Shadergraph Patcher
 ![UnityVersion](https://img.shields.io/static/v1?label=unity&message=2022.3%2B&color=blue&style=flat&logo=Unity)
 ![GitHub](https://img.shields.io/github/license/dotmos/UnityShaderGraphPatcher)
 
