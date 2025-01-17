@@ -8,6 +8,29 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ShaderGraphPatcherWindow : EditorWindow {
+
+	enum UVTypeChoiceEnum : int {
+		Default = 0,
+		Min16uint = 1, 
+		Min16int = 2,
+		Uint = 3,
+		Int = 4
+	}
+	const string UV_TYPE_DEFAULT = "Default";
+	List<string> uvTypeChoices = new List<string>() {
+		UV_TYPE_DEFAULT,
+		"Min16uint",
+		"Min16int",
+		"Uint",
+		"Int"
+	};
+	Dictionary<UVTypeChoiceEnum, string> uvTypePatchLUT = new Dictionary<UVTypeChoiceEnum, string>() {
+		{UVTypeChoiceEnum.Min16uint, "min16uint" },
+		{UVTypeChoiceEnum.Min16int, "min16int" },
+		{UVTypeChoiceEnum.Uint, "uint" },
+		{UVTypeChoiceEnum.Int, "int" },
+	};
+
 	[MenuItem("Tools/Shader Graph Patcher")]
 	public static void Show() {
 		ShaderGraphPatcherWindow wnd = GetWindow<ShaderGraphPatcherWindow>();
@@ -26,7 +49,7 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 		shaderGraphField.label = "ShaderGraph:";
 		root.Add(shaderGraphField);
 
-		root.Add(new Label("OR"));
+		root.Add(new Label("and/or"));
 
 		var shaderField = new ObjectField();
 		shaderField.tooltip = "Drag & Drop a Shader here.";
@@ -46,6 +69,19 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 		patchNoInterpolation.value = true;
 		root.Add(patchNoInterpolation);
 
+		var patchUV0Type = new DropdownField("Patch UV0", uvTypeChoices, 0);
+		patchUV0Type.tooltip = "Patch UV0 input type";
+		root.Add(patchUV0Type);
+		var patchUV1Type = new DropdownField("Patch UV1", uvTypeChoices, 0);
+		patchUV1Type.tooltip = "Patch UV1 input type";
+		root.Add(patchUV1Type);
+		var patchUV2Type = new DropdownField("Patch UV2", uvTypeChoices, 0);
+		patchUV2Type.tooltip = "Patch UV2 input type";
+		root.Add(patchUV2Type);
+		var patchUV3Type = new DropdownField("Patch UV3", uvTypeChoices, 0);
+		patchUV3Type.tooltip = "Patch UV3 input type";
+		root.Add(patchUV3Type);
+
 		root.Add(new Label("\n"));
 
 		Button patchButton = new Button(() => {
@@ -54,7 +90,11 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 					shaderGraphField.value,
 					shaderField.value != null ? shaderField.value as Shader : null,
 					patchSVInstanceID.value,
-					patchNoInterpolation.value
+					patchNoInterpolation.value,
+					GetUVTypeChoiceForString(patchUV0Type.value),
+					GetUVTypeChoiceForString(patchUV1Type.value),
+					GetUVTypeChoiceForString(patchUV2Type.value),
+					GetUVTypeChoiceForString(patchUV3Type.value)
 				));
 			}
 		});
@@ -64,18 +104,33 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 		root.Add(patchButton);
 	}
 
+	UVTypeChoiceEnum GetUVTypeChoiceForString(string s) {
+		if(	Enum.TryParse<UVTypeChoiceEnum>(s, out UVTypeChoiceEnum result)) {
+			return result;
+		} else {
+			throw new System.Exception("UVType " + s + "not found/implemented");
+		}
+	}
 
 	struct PatchData {
 		public UnityEngine.Object shaderGraph;
 		public UnityEngine.Shader shader;
 		public bool patchSVInstanceID;
 		public bool patchNoInterpolation;
+		public UVTypeChoiceEnum uv0;
+		public UVTypeChoiceEnum uv1;
+		public UVTypeChoiceEnum uv2;
+		public UVTypeChoiceEnum uv3;
 
-		public PatchData(UnityEngine.Object shaderGraph, UnityEngine.Shader shader, bool patchSVInstanceID, bool patchNoInterpolation) {
+		public PatchData(UnityEngine.Object shaderGraph, UnityEngine.Shader shader, bool patchSVInstanceID, bool patchNoInterpolation, UVTypeChoiceEnum uv0, UVTypeChoiceEnum uv1, UVTypeChoiceEnum uv2, UVTypeChoiceEnum uv3) {
 			this.shaderGraph = shaderGraph;
 			this.shader = shader;
 			this.patchSVInstanceID = patchSVInstanceID;
 			this.patchNoInterpolation = patchNoInterpolation;
+			this.uv0 = uv0;
+			this.uv1 = uv1;
+			this.uv2 = uv2;
+			this.uv3 = uv3;
 		}
 
 	}
@@ -226,6 +281,24 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 				if (l.Contains("struct PackedVaryings")) {
 					handlePackedVaryings = true;
 				}
+			}
+
+			//Patch UV type
+			if(patchData.uv0 != UVTypeChoiceEnum.Default && l.Contains(" : TEXCOORD0;")) {
+				l = l.Replace("float", uvTypePatchLUT[patchData.uv0]);
+				l = l.Replace("half", uvTypePatchLUT[patchData.uv0]);
+			}
+			if (patchData.uv1 != UVTypeChoiceEnum.Default && l.Contains(" : TEXCOORD1;")) {
+				l = l.Replace("float", uvTypePatchLUT[patchData.uv1]);
+				l = l.Replace("half", uvTypePatchLUT[patchData.uv1]);
+			}
+			if (patchData.uv2 != UVTypeChoiceEnum.Default && l.Contains(" : TEXCOORD2;")) {
+				l = l.Replace("float", uvTypePatchLUT[patchData.uv2]);
+				l = l.Replace("half", uvTypePatchLUT[patchData.uv2]);
+			}
+			if (patchData.uv3 != UVTypeChoiceEnum.Default && l.Contains(" : TEXCOORD3;")) {
+				l = l.Replace("float", uvTypePatchLUT[patchData.uv3]);
+				l = l.Replace("half", uvTypePatchLUT[patchData.uv3]);
 			}
 
 			newLines.Add(l);

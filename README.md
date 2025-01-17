@@ -10,6 +10,7 @@ Tested with Shadergraph 14.0.11 and URP 14.0.11 . HDRP has not been tested.
 
 - Use SV_InstanceID instead of unity_InstanceID when using the InstanceID-node. This breaks instancing support for the shader, but in return allows using the shader with IndexedIndirect render functions. i.e. Graphics.RenderPrimitivesIndexedIndirect
 - Add "nointerpolation" attribute to CustomInterpolators / Vertexshader output
+- Support for uint, int, min16uint and min16int vertex input attributes. i.e. "float4 uv2 : TEXCOORD2;" becomes "min16uint4 uv2 : TEXCOORD2;". NOTE: This will **ONLY** patch vertex INPUT! All other nodes/code will not be affected. 
 
 ### Patching
 
