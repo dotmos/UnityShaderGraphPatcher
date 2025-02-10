@@ -59,9 +59,9 @@ public class ShaderGraphPatcherWindow : EditorWindow {
 
 		root.Add(new Label("\nSettings:\n"));
 
-		var patchSVInstanceID = new Toggle("Patch InstanceID = SV_InstanceID");
+		var patchSVInstanceID = new Toggle("Patch InstanceID = SV_InstanceID. NOTE: This has been fixed in Unity6 and you should no longer patch it.");
 		patchSVInstanceID.tooltip = "The patched shader will use SV_InstanceID instead of unity_InstanceID when using the InstanceID-node. This breaks instancing support for the shader, but in return allows using the shader with IndexedIndirect render functions. i.e. Graphics.RenderPrimitivesIndexedIndirect";
-		patchSVInstanceID.value = true;
+		patchSVInstanceID.value = false;
 		root.Add(patchSVInstanceID);
 
 		var patchNoInterpolation = new Toggle("Patch \"NoInterpolation\" CustomInterpolators");
